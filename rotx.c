@@ -77,3 +77,46 @@ void rot_x(char *s, int x)
             if (x < 0)
                 x = 26 + (x % 26);
             s[i] = s[i] + x - 'A';
+            s[i] = s[i] % 26;
+            s[i] = s[i] + 'A';
+        }
+        else if (('a' <= s[i]) && (s[i] <= 'z'))
+        {
+            if (x < 0)
+                x = 26 + (x % 26);
+            s[i] = s[i] + x - 'a';
+            s[i] = s[i] % 26;
+            s[i] = s[i] + 'a';
+        }
+        else if (('0' <= s[i]) && (s[i] <= '9'))
+        {
+            if (x < 0)
+                x = 10 + (x % 10);
+            s[i] = s[i] + x - '0';
+            s[i] = s[i] % 10;
+            s[i] = s[i] + '0';
+        }
+    }
+}
+
+int main(int argc, char **argv)
+{
+    if (argc < 2)
+        return 0;
+    int rot = my_atoi(argv[1]);
+    char c[2];
+    c[1] = '\0';
+    ssize_t cmpt;
+    while ((cmpt = read(STDIN_FILENO, c, 1)) != 0)
+    {
+        if (cmpt == -1)
+            return 1;
+        rot_x(c, rot);
+        if ((write(STDOUT_FILENO, c, 1)) != 1)
+        {
+            if ((write(STDOUT_FILENO, c, 1)) == -1)
+                return 1;
+            return 0;
+        }
+    }
+}
